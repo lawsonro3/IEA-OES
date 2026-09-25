@@ -25,6 +25,7 @@ scripts/
   seed_gazetteers.py        one-off: built the gazetteers from the sources above
   propose_search_terms.py   proposes project search terms; fills empty cells only
   add_map_fields.py         capacity_kw, lat, lon, location_basis for projects; fills empty cells only
+  make_country_workbooks.py yearly reporting workbooks for country reps, pre-filled from the lists
 map/
   build_maps.py             builds output/test_sites_map.html and output/projects_map.html
   *_template.html, leaflet.css, countries-10m.json   page templates and embedded assets
@@ -52,6 +53,16 @@ and the **Ocean Energy Projects Atlas** (https://claude.ai/artifact/V4PfT3yWmVM3
 The projects map shows ocean energy projects with a stated capacity (planned ones included)
 that a country chapter names; `capacity_basis` and `location_basis` say where each value
 came from.
+
+Yearly reporting workbooks for the country representatives (blank template plus one per
+country, pre-filled with its test sites and recent projects, each with an example row):
+
+```bash
+python3 scripts/make_country_workbooks.py --year 2026
+```
+
+They go to `output/country_workbooks/`, named
+`IEA OES Annual Test Site and Project Reporting - <Country> - <Year>.xlsx`.
 
 ## The gazetteers are the source of truth
 
