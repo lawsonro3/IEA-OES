@@ -1,0 +1,104 @@
+group,action,row,row_name,target,target_name,recommendation,reason,decision
+A PRIMRE link,link PRIMRE record,P0413,Cape Sharp Tidal Venture,P0017,Cape Sharp Tidal project at FORCE,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0417,Chuja Island Breakwater OWC Pilot Plant,P0250,Wave Energy Converter with Energy Storage System Applicable to Breakwaters in Remote Island,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0423,Crestwing Demonstration,P0072,"Crestwing Tordenskiold, Kattegat",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0439,Enermar Pilot Plant,P0162,"Kobold turbine (Enermar platform), Strait of Messina",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0442,ExoWave North Sea Demonstration,P0078,"Exowave WEC demonstration, Hanstholm / Danish North Sea",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0455,Full Scale 1.5MW Pembrokeshire Demonstration,P0342,Bombora Pembrokeshire Demonstration Project,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0459,Ghana Wave Park Pilot,P0307,Ada Project,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0479,ISWEC Solar Hybrid Installation Near Ravenna,P0172,ISWEC pilot project off Ravenna,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0489,Jiangxia Tidal Power Station,P0051,Jiangxia Tidal Power Plant,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0496,Kavaratti OTEC Powered LTTD Desalination Plant,P0147,"OTEC-powered desalination plant, Kavaratti Island (Lakshadweep)",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0498,Kobold II Plant in Indonesia,P0163,Kobold prototype for Lomboc Island (Indonesian plant),yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0509,Lashy Sound Tidal Array,P0323,Scotrenewables Lashy Sound,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0515,MS Havkraft H-WEC,P0229,Havkraft Wave Energy Converter prototype at Stad,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0518,Marina di Pisa,P0165,40South Energy H24 wave plant at Marina di Pisa (H-WEP 1),yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0519,Mavi Mi1 Deployment at Blind Channel Tidal Demonstration Centre,P0029,Mavi Innovations Mi1 tidal turbine at Blind Channel Resort and Marina,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0520,MeyGen Pentland Firth,P0320,MeyGen,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0523,Minesto Holyhead Deep Pilot,P0305,Minesto Deep Green at Holyhead Deep,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0530,Moorpower at North Frementle,P0004,MoorPower,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0535,NIOT Wave-powered Navigation Buoy Demo,P0141,"NIOT wave-powered navigational buoy, Kamarajar Port, Chennai",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0537,Nankun at Sea Trial - South China Sea,P0062,“Nankun” megawatt-scale floating wave energy power generation platform,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0538,Naru Strait - Goto Islands,P0189,Goto Islands tidal demonstration field,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0543,New Energy for Martinique and Overseas NEMO,P0085,Nemo,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0546,Normandie Hydroliennes NH1 Tidal Energy Project,P0361,"NH1 pilot array, Raz Blanchard",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0558,OWC Pico Power Plant,P0235,Pico Plant,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0570,Oosterschelde Tocardo,P0199,"Tocardo 1.25 MW tidal power plant, Eastern Scheldt barrier",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0582,Penghu Aquaculture Platform at Zhuhai,P0058,“Penghu” Wave Energy Deep-Sea Aquaculture Platform,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0596,Project Texel Tocardo,P0201,BlueTec floating platform,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0601,REWEC3 in the Harbour of Salerno,P0178,REWEC caisson breakwater plant at the Port of Salerno,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0608,Renewables for Subsea Power (RSP) Project,P0344,Mocean Energy Blue X,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0610,Roosevelt Island Tidal Energy (RITE) Project Demonstration,P0374,"Verdant Power Kinetic Hydropower System (KHPS) TriFrame, East River (RITE)",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0611,Rotary Wave Butterfly Valencia Test,P0286,Butterfly (Rotary Wave 1:4 scale demonstration),yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0642,Sharp Eagle I Sea Trial,P0048,Sharp Eagle Wanshan (100 kW wave energy device),yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0645,Singapore Tidal Demonstration Project,P0269,Tidal Demo Project for Singapore,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0647,Sotenas Wave Power Project,P0302,Sotenäs Project,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0654,Söderfors Project,P0301,Soderfors marine current converter (Uppsala University),yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0658,Texel Wave Energy Pilot,P0209,"Slow Mill North Sea wave farm, off Texel",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0659,Tidal Sails Kvalsund Strait,P0231,Tidal Sails,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0668,Water2Energy Zeeland Pilot,P0212,"Water2Energy tidal turbine, Vlissingen Harbor",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0671,Wave-Op - Dikwe project,P0124,Dikwe,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0678,Yongsoo OWC Pilot Plant,P0252,"500 kW Yongsoo OWC Pilot Plant, Jeju Island",yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0411,CalWave Scripps X1 Pilot,P0377,CalWave submerged pressure differential WEC off San Diego,yes,same project,applied
+A PRIMRE link,link PRIMRE record,P0613,SATREPS UTM Hybrid OTEC Project,P0192,First Experimental OTEC Plant of Malaysia,yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0629,Sabella D10 tidal turbine at Ushant Island - Phase 2,P0108,Sabella D10 tidal turbine at Ushant (Ouessant),yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0630,Sabella D10 tidal turbine at Ushant Island - Phase 3,P0108,Sabella D10 tidal turbine at Ushant (Ouessant),yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0401,Bluemull Sound Shetland Tidal Array,P0321,Nova Innovation Shetland Tidal Array (Bluemull Sound),yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0402,Bluemull Sound Shetland Tidal Array Phase 2,P0321,Nova Innovation Shetland Tidal Array (Bluemull Sound),yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0403,Bluemull Sound Shetland Tidal Array Phase 3,P0321,Nova Innovation Shetland Tidal Array (Bluemull Sound),yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0404,Bluemull Sound Shetland Tidal Array Phase 4,P0321,Nova Innovation Shetland Tidal Array (Bluemull Sound),yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0481,Igiugig Alaska Phase 1,P0375,"ORPC RivGen Power System, Igiugig, Alaska",yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0482,Igiugig Alaska Phase 2,P0375,"ORPC RivGen Power System, Igiugig, Alaska",yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0483,Igiugig Alaska Phase 3,P0375,"ORPC RivGen Power System, Igiugig, Alaska",yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0504,LHD Tidal Installation F,P0052,LHD Tidal Current Energy Demonstration Project,yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0505,LHD Tidal Installation G,P0052,LHD Tidal Current Energy Demonstration Project,yes,same project,applied
+A PRIMRE link,link PRIMRE record (as a phase),P0506,LHD Tidal Modules A-D Installation,P0052,LHD Tidal Current Energy Demonstration Project,yes,same project,applied
+B Pilot duplicate,merge,P0037,NewEast Energy Minas Passage tidal project,P0028,NewEast Energy Minas Passage tidal project,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0034,Big Moon Power project at FORCE berth D,P0031,Big Moon Power project at FORCE berth D,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0134,Pempa'q Tidal Energy project,P0033,Pempa'q In-stream Tidal Energy Project,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0040,RivGen Power System at Igiugig,P0375,"ORPC RivGen Power System, Igiugig, Alaska",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0075,Floating Power Plant P80 developments,P0074,Floating Power Plant P80 developments,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0103,SEAWORTHY,P0080,SEAWORTHY,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0087,WestWave,P0154,WestWave,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0092,WaveRoller (AW-Energy EU demonstration project),P0088,WaveRoller (AW-Energy EU demonstration project),yes,same project reported twice,applied
+B Pilot duplicate,merge,P0093,WaveBoost (Advanced Braking Module with Cyclic Energy Recovery System),P0089,WaveBoost (Advanced Braking Module with Cyclic Energy Recovery System),yes,same project reported twice,applied
+B Pilot duplicate,merge,P0160,SEASTAR,P0096,SEASTAR,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0349,SEASTAR,P0096,SEASTAR,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0158,WEDUSEA,P0097,WEDUSEA,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0352,OceanEnergy OE35 at EMEC (WEDUSEA),P0097,WEDUSEA,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0099,NH1,P0361,"NH1 pilot array, Raz Blanchard",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0126,NH1,P0361,"NH1 pilot array, Raz Blanchard",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0246,VianaWave,P0101,VianaWave,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0296,PLOTEC,P0248,PLOTEC,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0319,FOREST - Future Ocean Renewable Energy System Technologies,P0249,FOREST (Future Ocean Renewable Energy System Technologies),yes,same project reported twice,applied
+B Pilot duplicate,merge,P0159,Saoirse Wave Energy Project,P0102,SAO,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0311,Minesto deployment at Paimpol-Bréhat (TIGER),P0116,MINESTO demonstration at Paimpol-Brehat (TIGER),yes,same project reported twice,applied
+B Pilot duplicate,merge,P0312,HiWave-5 demonstration project (CorPower Ocean),P0242,"HiWave-5 / CorPower C4, Agucadoura",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0297,ACHIEVE Programme (scaled CETO unit at BiMEP),P0005,CETO deployment at BiMEP (ACHIEVE Programme),yes,same project reported twice,applied
+B Pilot duplicate,merge,P0295,Wavepiston full-scale test string at PLOCAN,P0077,"Wavepiston WEC at PLOCAN, Gran Canaria",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0003,The Albany M4 project,P0002,M4 WEC at Albany deployment site,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0197,Monaco seawater heat pump (thalassothermal) systems,P0196,Monaco seawater heat pump (thalassothermal) systems,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0220,Tidal Energy Marsdiep (200 kW),P0205,Tidal Energy Marsdiep (200 kW),yes,same project reported twice,applied
+B Pilot duplicate,merge,P0237,"WaveRoller 350 kW first-of-a-kind, Peniche",P0236,"WaveRoller 350 kW first-of-a-kind, Peniche",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0144,"OTEC-powered desalination plant, Kavaratti Island (Lakshadweep)",P0147,"OTEC-powered desalination plant, Kavaratti Island (Lakshadweep)",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0150,"OTEC-powered desalination plant, Kavaratti Island (Lakshadweep)",P0147,"OTEC-powered desalination plant, Kavaratti Island (Lakshadweep)",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0148,"NIOT wave-powered navigational buoy, Kamarajar Port, Chennai",P0141,"NIOT wave-powered navigational buoy, Kamarajar Port, Chennai",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0263,"500 kW Yongsoo OWC Pilot Plant, Jeju Island",P0252,"500 kW Yongsoo OWC Pilot Plant, Jeju Island",yes,same project reported twice,applied
+B Pilot duplicate,merge,P0304,Minesto Deep Green at Holyhead Deep,P0305,Minesto Deep Green at Holyhead Deep,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0353,Mocean Energy Blue X,P0344,Mocean Energy Blue X,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0348,Orbital Marine Power O2 at EMEC,P0347,Orbital Marine Power O2 at EMEC,yes,same project reported twice,applied
+B Pilot duplicate,merge,P0221,Azura,P0371,Northwest Energy Innovations (NWEI) Azura at WETS,yes,same project reported twice,applied
+C judgement call,link,P0639,Seagen Kyle Rhea,P0084,Stroma/MeyGen phase 1B (Kyle Rhea),yes,"Seagen Kyle Rhea (Atlantis, 8 MW, cancelled) is the Pilot's 'Stroma/MeyGen phase 1B (Kyle Rhea)'",applied
+C judgement call,merge,P0314,Minesto - Vestmannasund,P0338,Minesto Vestmannasund DG100,yes,"both Minesto at Vestmannasund, Faroe Islands (2020 DG100, 2025); also link PRIMRE's 3 Vestmanna records as phases",applied
+C judgement call,merge,P0038,Nova Innovation Petit Passage tidal energy project,P0340,Nova Innovation Nova Scotia tidal energy project,yes,Nova Innovation's Nova Scotia project is at Petit Passage,applied
+C judgement call,merge,P0372,Ocean Energy OE Buoy at WETS,P0157,"Ocean Energy OE-35 deployment at WETS, Hawaii",yes,"OE35 is the OE Buoy; same device at WETS, reported 2016-2020 and 2025",applied
+C judgement call,merge,P0261,1 MW class commercially available tidal energy converter,P0265,1 MW commercial-scale tidal energy converter,yes,"KIOST 1 MW tidal converter, reported 2020 and 2025",applied
+C judgement call,merge,P0320,MeyGen,P0014 + P0234,MeyGen Phase 1A / MeyGen (Andritz Hydro Hammerfest MK1 turbines),yes,MeyGen Phase 1A (Belgium chapter) and Andritz turbines for MeyGen (Norway chapter) are parts of MeyGen,applied
+C judgement call,to test sites,P0067 P0156 P0273 P0279,"Zhoushan Marine Energy Test Site / Atlantic Marine Energy Test Site (AMETS), Belmullet, Co. Mayo / Sentosa-ERI@N Tidal Test Site / Sentosa-ERI@N Tidal Test Site",,,yes,"test sites filed as projects; already in test_sites.csv (nmts_zhoushan, amets, sentosa)",applied
+C judgement call,no link,P0383 P0384,Afsluitdijk T-1 Demonstration / Afsluitdijk T-1 Test,P0207,Tidal turbine arrays in Afsluitdijk discharge gates,no,Tocardo T-1 at Afsluitdijk operated 2015-19; P0207 is future arrays in the discharge gates,applied: left as is
+C judgement call,no link,P0430,EEL Energy Pilot,P0120 / P0170,EEL ENERGY prototype at Gravelines / EEL Energy tidal device (Umbra - EEL Energy collaboration),no,EEL Energy Brest 2022-23 is a later deployment than Gravelines 2020 / SEENEOH 2016,applied: left as is
+C judgement call,no link,P0573,P154 Guinard Demo,P0112,"Guinard Energies MegaWattBlue demonstration, Ria d'Etel",no,"Guinard P154 (20 kW, 2019) is a different device from MegaWattBlue (250 kW)",applied: left as is
+C judgement call,no link,P0464 P0465,HPG Evo25 Jurong Island 1 / HPG Evo5 Jurong Island 2,P0272,Jurong Island offshore floating solar and tidal turbine hybrid system,no,"HPG turbines at Jurong Island 2024-25, not ERI@N's 2020 floating-solar hybrid",applied: left as is
+C judgement call,no merge,P0098,EU-SCORES,P0247,EU-SCORES wave energy array co-located with floating offshore wind,no,EU-SCORES is a programme; P0247 is its wave array in Portugal,applied: left as is
+C judgement call,no merge,P0298,"Blue-X (Mocean Energy, EuropeWave Phase 3)",P0344,Mocean Energy Blue X,no,Blue X at BiMEP (EuropeWave) is a different deployment from Blue X at EMEC,applied: left as is
+C judgement call,no merge,P0369,M4 wave energy device,P0002,M4 WEC at Albany deployment site,no,"'M4 wave energy device' in the UK chapter is research on the device, not the Albany project",applied: left as is

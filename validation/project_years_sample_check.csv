@@ -1,0 +1,8 @@
+sample,n,verdict,count,notes
+1 (before fixes),40,correct,29,
+1 (before fixes),40,partly (developer named not the deployment),3,
+1 (before fixes),40,wrong,7,"device name reused across deployments (Open Centre Turbine -> Brims; Sabella D10 -> Capul; SCHOTTEL HYDRO -> ERI@N); generic or clashing names (Ocean Renewable; Tahiti SWAC; Proteus NP1000; Canoe Pass as a resource)"
+1 (before fixes),40,unclear,1,TidalPower -> TRITON
+2 (after fixes),40,correct,32,
+2 (after fixes),40,partly (developer named not the deployment),5,"Bombora, Wavepiston, WaveStar in lists of developers; generic ISWEC; OCGen technology in 2008"
+2 (after fixes),40,wrong,3,"CalWave = the test centre not the company; OE Buoy at EMEC counted as the WETS project; a Genoa pilot counted as ISWEC Ravenna"

@@ -1,0 +1,36 @@
+candidate,country,n_records,found_in,decision,site_id,notes
+CNR-INSEAN towing tanks and flume tanks,Italy,1,Pilot projects (test_site),added,cnr_insean,
+COAST Laboratory,United Kingdom,1,Pilot projects (test_site),added,coast_lab,
+Cozumel Canal natural test site for ocean current energy devices,Mexico,1,Pilot projects (test_site),added,cozumel,"2009 mentions are resource descriptions, not testing"
+Ensenada natural test site for wave energy devices,Mexico,1,Pilot projects (test_site),merged,el_sauzal,probably the El Sauzal site at Ensenada; confirm. 'Ensenada' not added as alias (matches CICESE)
+Experimental Power Grid Centre - EPGC,Singapore,1,Pilot projects (test_site),added,epgc,grid test facility
+FastBlade tidal turbine blade test facility,United Kingdom,1,Pilot projects (test_site),added,fastblade,
+FloWave,United Kingdom,1,Pilot projects (test_site),added,flowave,
+Hawaii National Marine Renewable Energy Center (HINMREC) - Wave Test Facility and OTEC,United States,1,Pilot projects (test_site),added,hinmrec,"umbrella centre for wets_us and otec_keahole, like pmec"
+Ifremer Boulogne test tank,France,1,Pilot projects (test_site),added,ifremer_boulogne,
+Kelvin Hydrodynamics Laboratory,United Kingdom,1,Pilot projects (test_site),added,kelvin_lab,
+MOREnergy Lab offshore testing site in Pantelleria,Italy,1,Pilot projects (test_site),added,morenergy_pantelleria,'MOREnergy Lab' alone not an alias: usually the research group
+Marine Corrosion Test Site “El Bocal”,Spain,1,Pilot projects (test_site),added,el_bocal,
+Marine Renewable Energy Lab (MORE),Italy,1,Pilot projects (test_site),added,more_lab,Eni / PoliTo lab (2020). '(MORE)' alone not an alias: clashes with Algarve's MORE team
+Marine Renewable Energy Lab (MaRELab),Italy,1,Pilot projects (test_site),added,marelab,
+"Mermaid concession zone, Belgian North Sea",Belgium,1,Pilot projects (test_site),dropped,,"a planned wind-wave park concession (a project), not a test site"
+"National wave energy Wanshan, full scale test site Guangdong Province",China,1,Pilot test-site tables,merged,nmts_zhuhai,
+Natural Ocean Engineering Laboratory (NOEL),Italy,1,Pilot projects (test_site),added,noel,field lab in the sea
+Naval Surface Warfare Center Maneuvering and Seakeeping Basin,United States,1,Pilot projects (test_site),added,mask_basin,
+New coastal and offshore basin,Belgium,1,Pilot projects (test_site),added,cob_ostend,"the Coastal & Ocean Basin (COB), Ostend, named from 2018"
+Ocean Basin Facility - TCOMS,Singapore,1,Pilot projects (test_site),added,tcoms,
+Offshore Test Site NL (OTS-NL),Netherlands,1,Pilot projects (test_site),added,ots_nl,
+Okinawa Prefecture's Ocean Thermal Energy Conversion (OTEC) Demonstration Test Facility,Japan,1,Pilot projects (test_site),added,okinawa_otec,
+Onshore component performance test facility for rotor blades and other structural parts,Republic of Korea,1,Pilot projects (test_site),merged,kiost_bladelab,2020 description of the facility later named BladeLab (KIOST Busan)
+Open sea test bed for tidal energy converters,Republic of Korea,1,Pilot projects (test_site),merged,uldolmok,"Pilot location: 4.5 MW open sea test site, Uldolmok Strait, Jindo"
+Open sea test bed for wave energy converters,Republic of Korea,1,Pilot projects (test_site),merged,kriso_wets,Pilot location: west shore of Jeju near Yongsoo OWC
+Pembrokeshire Demonstration Zone (PDZ),United Kingdom,1,Pilot projects (test_site),added,pdz,
+Peniche test site,Portugal,1,Pilot projects (test_site),added,peniche,"WaveRoller site; 'Peniche' alone not an alias (shipyard, town mentions)"
+Pilote Zone,Portugal,1,Pilot test-site tables,merged,pilot_zone,typo in the 2017 test-site table
+Renewable Energy Integration Demonstrator - Singapore (REIDS),Singapore,1,Pilot projects (test_site),added,reids,microgrid demonstrator
+"SeaPower Natural Laboratory, Strait of Messina (Villa San Giovanni / Punta Pezzo)",Italy,1,Pilot projects (test_site),added,seapower_messina,'SeaPower' alone not an alias: clashes with the Irish company SeaPower Ltd
+Sharp Eagle Wanshan (100 kW wave energy device),China,1,Pilot projects (test_site),dropped,,"a device / project, not a test site"
+Stadt Towing Tank,Norway,1,Pilot projects (test_site),added,stadt_towing_tank,
+Testbed for Marine Materials - Fiskebäckskil,Sweden,1,Pilot projects (test_site),added,kristineberg,
+The University of Maine test sites,United States,1,Pilot projects (test_site),merged,umaine_castine; umaine_monhegan; umaine_w2,already listed as three sites
+Tidal Energy Component Testing Laboratory (KIOST BladeLab),Republic of Korea,1,Pilot projects (test_site),added,kiost_bladelab,
