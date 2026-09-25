@@ -1,0 +1,782 @@
+<meta charset="utf-8">
+<title>OES Test Sites Atlas</title>
+<meta name="description" content="Ocean energy test sites - open water, laboratories and tanks - named in the IEA-OES annual reports, 2002–2025, with the projects deployed at each.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/*__LEAFLET_CSS__*/
+</style>
+<style>
+:root {
+  --sea: #d3e2e9;
+  --land: #f7f8f3;
+  --border: #a9bcc5;
+  --grat: #b9ccd4;
+  --ink: #0f2f3d;
+  --muted: #587180;
+  --pane: #fbfcfc;
+  --line: #dde6ea;
+  --chip: #eef3f5;
+  --accent: #d95f24;
+  --accent-ink: #ffffff;
+  --accent-soft: #f7dccd;
+  --focus: #1f6f9a;
+  --shadow: 0 1px 2px rgba(15, 47, 61, .08), 0 6px 24px rgba(15, 47, 61, .10);
+  --f-label: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --pane-w: 330px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --sea: #0a1920;
+    --land: #1a2b33;
+    --border: #36535f;
+    --grat: #173039;
+    --ink: #e1ebee;
+    --muted: #8ea6b1;
+    --pane: #0f2129;
+    --line: #223a44;
+    --chip: #16303a;
+    --accent: #f08a4e;
+    --accent-ink: #1a0d05;
+    --accent-soft: #4a2a19;
+    --focus: #7cc4ea;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 24px rgba(0, 0, 0, .35);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --sea: #0a1920;
+  --land: #1a2b33;
+  --border: #36535f;
+  --grat: #173039;
+  --ink: #e1ebee;
+  --muted: #8ea6b1;
+  --pane: #0f2129;
+  --line: #223a44;
+  --chip: #16303a;
+  --accent: #f08a4e;
+  --accent-ink: #1a0d05;
+  --accent-soft: #4a2a19;
+  --focus: #7cc4ea;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 24px rgba(0, 0, 0, .35);
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--pane);
+  color: var(--ink);
+  font: 15px/1.45 var(--f-body);
+}
+.app {
+  height: 100%;
+  display: grid;
+  grid-template-columns: var(--pane-w) 1fr;
+}
+
+/* ---------- Navigation pane ---------- */
+.pane {
+  background: var(--pane);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 20px 18px 24px;
+  z-index: 1000;
+}
+.pane header { display: grid; gap: 6px; }
+.eyebrow {
+  font: 600 12px/1.2 var(--f-label);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1 {
+  margin: 0;
+  font: 700 30px/1.02 var(--f-label);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.summary {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.summary b { color: var(--ink); font: 500 14px var(--f-mono); }
+
+.group { display: grid; gap: 10px; }
+.group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+h2 {
+  margin: 0;
+  font: 600 13px/1.2 var(--f-label);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.actions { display: flex; gap: 4px; }
+.link {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--focus);
+  font: 600 13px var(--f-label);
+  letter-spacing: .04em;
+  cursor: pointer;
+}
+.link:hover { background: var(--chip); }
+
+/* Year grid: each year is a toggle with a bar for the number of sites that report names. */
+.years {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+.year {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--pane);
+  color: var(--muted);
+  border-radius: 5px;
+  padding: 0 0 3px;
+  display: grid;
+  grid-template-rows: 26px auto;
+  cursor: pointer;
+  font: 500 12px var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+}
+.year .bar-wrap { display: flex; align-items: flex-end; justify-content: center; padding: 3px 5px 0; }
+.year .bar { width: 100%; background: var(--yc); border-radius: 2px 2px 0 0; min-height: 1px; opacity: .28; }
+.year[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); background: var(--chip); }
+.year[aria-pressed="true"] .bar { opacity: 1; }
+
+.seg { display: inline-grid; grid-auto-flow: column; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button {
+  appearance: none; border: 0; background: var(--pane); color: var(--muted);
+  padding: 4px 10px; font: 600 13px var(--f-label); letter-spacing: .03em; cursor: pointer;
+}
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--pane); }
+.colour-by { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--muted); }
+.ramp { display: grid; gap: 3px; }
+.ramp-bar { height: 10px; border-radius: 3px; }
+.ramp-axis { display: flex; justify-content: space-between; font: 400 11px var(--f-mono); color: var(--muted); }
+.year:hover { border-color: var(--muted); }
+.hint { margin: 0; font-size: 12.5px; color: var(--muted); }
+
+/* Country list */
+.countries { display: grid; gap: 1px; margin: 0; padding: 0; list-style: none; }
+.country {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.country:hover { background: var(--chip); }
+.country input { margin: 0; accent-color: var(--ink); width: 15px; height: 15px; }
+.country .n { font: 400 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.country.empty .name { color: var(--muted); }
+
+/* Visible sites */
+.sites { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.site-btn {
+  appearance: none;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  padding: 7px 4px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 10px;
+  cursor: pointer;
+  font: inherit;
+}
+.site-btn:hover { background: var(--chip); }
+.site-btn .nm { font-size: 14px; line-height: 1.25; }
+.site-btn .ct { grid-column: 1; font-size: 12px; color: var(--muted); }
+.site-btn .ms { grid-row: 1 / span 2; grid-column: 2; align-self: center; font: 500 12px var(--f-mono); color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--pane), 0 0 0 2.5px var(--line); flex: none; }
+.empty-note { margin: 0; font-size: 13.5px; color: var(--muted); }
+
+.legend { display: grid; gap: 8px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+.legend-row { display: flex; align-items: center; gap: 10px; }
+.legend svg { flex: none; }
+
+button:focus-visible, input:focus-visible, .link:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Map ---------- */
+#map { height: 100%; background: var(--sea); }
+.leaflet-container { font: 14px/1.4 var(--f-body); background: var(--sea); }
+.leaflet-bar a, .leaflet-bar a:hover { background: var(--pane); color: var(--ink); border-bottom-color: var(--line); }
+.leaflet-bar { border: 1px solid var(--line) !important; box-shadow: var(--shadow) !important; }
+.leaflet-control-attribution { background: color-mix(in srgb, var(--pane) 85%, transparent) !important; color: var(--muted); font: 11px var(--f-body); }
+.leaflet-control-attribution a { color: var(--muted); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--pane); color: var(--ink); box-shadow: var(--shadow); }
+.leaflet-popup-content-wrapper { border-radius: 8px; }
+.leaflet-popup-content { margin: 14px 16px; width: 300px; }
+.leaflet-container a.leaflet-popup-close-button { color: var(--muted); }
+.leaflet-tooltip {
+  background: var(--pane); color: var(--ink); border: 1px solid var(--line);
+  box-shadow: var(--shadow); font: 600 13px var(--f-label); letter-spacing: .02em;
+}
+.leaflet-tooltip-top:before { border-top-color: var(--pane); }
+
+.country-label { background: none; border: 0; }
+.country-label span {
+  display: block;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font: 600 11px/1 var(--f-label);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-shadow: 0 0 2px var(--land), 0 0 4px var(--land), 0 0 6px var(--land);
+}
+.pop h3 { margin: 0 0 2px; font: 700 18px/1.15 var(--f-label); text-wrap: balance; }
+.pop .where { margin: 0; font-size: 13px; color: var(--muted); }
+.pop .coords { margin: 2px 0 0; font: 400 11.5px var(--f-mono); color: var(--muted); }
+.pop .stat { margin: 10px 0 6px; font-size: 13px; }
+.pop .stat b { font: 500 13px var(--f-mono); }
+.strip { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2px; margin: 0 0 3px; }
+.strip span { height: 16px; border-radius: 2px; background: var(--chip); box-sizing: border-box; }
+.strip span.on { background: var(--yc); }
+.strip span.sel { outline: 1px solid var(--ink); outline-offset: -1px; }
+.strip span.on:not(.sel) { opacity: .35; }
+.strip-axis { display: flex; justify-content: space-between; font: 400 10.5px var(--f-mono); color: var(--muted); }
+.pop blockquote {
+  margin: 10px 0 0; padding: 8px 10px; background: var(--chip); border-radius: 6px;
+  font-size: 13px; line-height: 1.45;
+}
+.pop cite { display: block; margin-top: 6px; font: normal 400 11.5px var(--f-mono); color: var(--muted); }
+
+.pane-toggle { display: none; }
+
+/* Site types: chips in the pane, shapes on the map. */
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  appearance: none; border: 1px solid var(--line); background: var(--pane); color: var(--muted);
+  border-radius: 999px; padding: 3px 10px; font: 600 13px var(--f-label); letter-spacing: .02em;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+}
+.chip .n { font: 400 11.5px var(--f-mono); color: var(--muted); }
+.chip[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); background: var(--chip); }
+.chip:hover { border-color: var(--muted); }
+.chip svg, .shape svg { flex: none; display: block; }
+.site-mark { background: none; border: 0; }
+.site-mark svg { display: block; overflow: visible; }
+.site-btn .ms .shape { display: inline-flex; }
+.pop .type { margin: 2px 0 0; font: 600 12px var(--f-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pop .projects { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 3px; font-size: 13px; max-height: 150px; overflow-y: auto; }
+.pop .projects li { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.pop .projects .yrs { font: 400 11.5px var(--f-mono); color: var(--muted); white-space: nowrap; }
+.marks { display: grid; gap: 5px; }
+.marks div { display: flex; align-items: center; gap: 8px; }
+.pop .sub { margin: 12px 0 0; font: 600 12px var(--f-label); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- Narrow screens: the pane becomes a drawer over the map ---------- */
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; }
+  .pane {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(88vw, 340px);
+    box-shadow: var(--shadow);
+    transform: translateX(-102%);
+    transition: transform .22s ease;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
+  }
+  .app.open .pane { transform: none; }
+  .pane-toggle {
+    display: inline-flex;
+    position: fixed;
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    left: 12px;
+    z-index: 1100;
+    align-items: center;
+    gap: 6px;
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--pane);
+    color: var(--ink);
+    border-radius: 6px;
+    padding: 7px 12px;
+    font: 600 14px var(--f-label);
+    letter-spacing: .04em;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+  }
+  .app.open .pane-toggle { left: calc(min(88vw, 340px) + 10px); }
+  .leaflet-top.leaflet-right { top: env(safe-area-inset-top, 0px); }
+  .leaflet-popup-content { width: min(280px, 70vw); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pane { transition: none; }
+}
+</style>
+
+<div class="app" id="app">
+  <button class="pane-toggle" id="pane-toggle" aria-controls="pane" aria-expanded="false">Filters</button>
+
+  <aside class="pane" id="pane" aria-label="Filters">
+    <header>
+      <div class="eyebrow">IEA-OES annual reports</div>
+      <h1>Ocean Test Sites Atlas</h1>
+      <p class="summary" id="summary"></p>
+    </header>
+
+    <section class="group" aria-labelledby="years-h">
+      <div class="group-head">
+        <h2 id="years-h">Report year</h2>
+        <div class="actions">
+          <button class="link" id="years-all">All</button>
+          <button class="link" id="years-none">None</button>
+          <button class="link" id="years-latest">Latest</button>
+        </div>
+      </div>
+      <div class="years" id="years"></div>
+      <p class="hint">Each report year has its own colour. Bars show how many of the selected sites each report names.</p>
+      <div class="colour-by">
+        <span>Colour sites by</span>
+        <div class="seg" role="group" aria-label="Colour sites by">
+          <button id="by-first" aria-pressed="true">First report</button>
+          <button id="by-latest" aria-pressed="false">Latest report</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" aria-labelledby="types-h">
+      <div class="group-head">
+        <h2 id="types-h">Site type</h2>
+        <div class="actions">
+          <button class="link" id="types-all">All</button>
+          <button class="link" id="types-none">None</button>
+        </div>
+      </div>
+      <div class="chips" id="types"></div>
+      <p class="hint">Open water: sea, estuary and river sites. Laboratory: tanks, basins, flumes, blade and grid test facilities. Shore-based: plants on a breakwater, dike or coast. Mixed: centres that run several of these.</p>
+    </section>
+
+    <section class="group" aria-labelledby="countries-h">
+      <div class="group-head">
+        <h2 id="countries-h">Country</h2>
+        <div class="actions">
+          <button class="link" id="countries-all">All</button>
+          <button class="link" id="countries-none">None</button>
+        </div>
+      </div>
+      <ul class="countries" id="countries"></ul>
+    </section>
+
+    <section class="group" aria-labelledby="sites-h">
+      <div class="group-head">
+        <h2 id="sites-h">Sites shown</h2>
+        <span class="eyebrow" id="sites-year-h">first year · reports</span>
+      </div>
+      <ul class="sites" id="sites"></ul>
+    </section>
+
+    <div class="legend">
+      <div class="ramp" aria-hidden="true">
+        <div class="ramp-bar" id="ramp-bar"></div>
+        <div class="ramp-axis" id="ramp-axis"></div>
+      </div>
+      <div id="legend-text"></div>
+      <div class="marks" id="type-marks"></div>
+      <div>Positions are approximate (assigned to the named locality) except where a report states coordinates. Projects at a site are those the project list links to it, with the report years that name them.</div>
+    </div>
+  </aside>
+
+  <div id="map" role="region" aria-label="Map of test sites"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const DATA = __SITE_DATA__;
+const TOPO = __COUNTRIES_TOPO__;
+
+(function () {
+  const YEARS = DATA.years;
+  const SITES = DATA.sites.filter(s => Object.keys(s.years).length);
+  const COUNTRIES = [...new Set(SITES.map(s => s.country))].sort();
+  const TYPES = [["open-water", "Open water"], ["laboratory", "Laboratory"], ["shore-based", "Shore-based"], ["mixed", "Mixed"]];
+  const TYPE_LABEL = Object.fromEntries(TYPES);
+  const STORE = "oes-atlas-filters-v2";
+
+  const state = { years: new Set(YEARS), countries: new Set(COUNTRIES), types: new Set(TYPES.map(t => t[0])), by: "first" };
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || "null");
+    if (saved) {
+      const y = saved.years.filter(v => YEARS.includes(v));
+      const c = saved.countries.filter(v => COUNTRIES.includes(v));
+      if (y.length || c.length) { state.years = new Set(y); state.countries = new Set(c); }
+      if (Array.isArray(saved.types)) state.types = new Set(saved.types.filter(v => TYPE_LABEL[v]));
+      if (saved.by === "latest") state.by = "latest";
+    }
+  } catch (e) { /* storage unavailable: use defaults */ }
+  const save = () => {
+    try { localStorage.setItem(STORE, JSON.stringify({ years: [...state.years], countries: [...state.countries], types: [...state.types], by: state.by })); }
+    catch (e) { /* ignore */ }
+  };
+
+  // One shape per site type, drawn in a 16 px box: circle, square, triangle, diamond.
+  function shapeSvg(type, fill, stroke, size = 16, sw = 2) {
+    const c = size / 2, r = size / 2 - sw;
+    const attrs = `fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"`;
+    let body;
+    if (type === "laboratory") body = `<rect x="${c - r * 0.86}" y="${c - r * 0.86}" width="${r * 1.72}" height="${r * 1.72}" rx="1.5" ${attrs}/>`;
+    else if (type === "shore-based") body = `<path d="M${c} ${c - r}L${c + r} ${c + r * 0.8}L${c - r} ${c + r * 0.8}Z" ${attrs}/>`;
+    else if (type === "mixed") body = `<path d="M${c} ${c - r}L${c + r} ${c}L${c} ${c + r}L${c - r} ${c}Z" ${attrs}/>`;
+    else body = `<circle cx="${c}" cy="${c}" r="${r * 0.9}" ${attrs}/>`;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">${body}</svg>`;
+  }
+
+  const $ = id => document.getElementById(id);
+  const fmt = n => n.toLocaleString("en-US");
+  const tok = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const count = (s, years = state.years) => { let n = 0; for (const y of years) n += s.years[y] || 0; return n; };
+  const fmtCoord = (lat, lon) =>
+    `${Math.abs(lat).toFixed(2)}°${lat >= 0 ? "N" : "S"}, ${Math.abs(lon).toFixed(2)}°${lon >= 0 ? "E" : "W"}`;
+
+  // ---------- Year colours ----------
+  // Report years are ordered, so each gets its own step on one perceptually ordered
+  // ramp (viridis): unique per year, and later years read as later. Light and dark
+  // themes use different stretches of it so the ends stay visible against the land.
+  const VIRIDIS = ["#440154", "#482475", "#414487", "#355f8d", "#2a788e", "#21918c",
+                   "#22a884", "#44bf70", "#7ad151", "#bddf26", "#fde725"];
+  const isDark = () => {
+    const t = document.documentElement.getAttribute("data-theme");
+    return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  };
+  function ramp(t) {
+    const x = Math.min(Math.max(t, 0), 1) * (VIRIDIS.length - 1);
+    const i = Math.min(Math.floor(x), VIRIDIS.length - 2), f = x - i;
+    const a = VIRIDIS[i], b = VIRIDIS[i + 1];
+    const ch = k => Math.round(parseInt(a.substr(k, 2), 16) * (1 - f) + parseInt(b.substr(k, 2), 16) * f);
+    return "#" + [1, 3, 5].map(k => ch(k).toString(16).padStart(2, "0")).join("");
+  }
+  let YEAR_COLOUR = {};
+  function computeYearColours() {
+    const [lo, hi] = isDark() ? [0.2, 1.0] : [0.0, 0.86];
+    YEAR_COLOUR = {};
+    YEARS.forEach((y, i) => { YEAR_COLOUR[y] = ramp(lo + (hi - lo) * i / Math.max(YEARS.length - 1, 1)); });
+  }
+  // The report year that colours a site: the first (or latest) selected report that names it.
+  function colourYear(s) {
+    const ys = YEARS.filter(y => state.years.has(y) && s.years[y]);
+    return ys.length ? (state.by === "first" ? ys[0] : ys[ys.length - 1]) : null;
+  }
+
+  // ---------- Map ----------
+  const map = L.map("map", { preferCanvas: true, worldCopyJump: true, minZoom: 1, maxZoom: 11, zoomSnap: 0.5, zoomControl: false }).setView([30, 0], 2);
+  L.control.zoom({ position: "topright" }).addTo(map);
+  map.attributionControl.setPrefix(false);
+  map.attributionControl.addAttribution("Coastlines: Natural Earth · Sites: IEA-OES annual reports, PRIMRE");
+
+  // Outlines that cross the 180° meridian (eastern Russia, Fiji...) jump from +180 to
+  // -180 between vertices, which Leaflet draws as a stripe across the whole map.
+  // Unwrap each ring so its longitudes run continuously past ±180 instead.
+  const COUNTRY_FEATURES = topojson.feature(TOPO, TOPO.objects.countries);
+  function unwrapRing(ring) {
+    // Only rings that jump across the meridian need fixing. Move the minority of points
+    // to the side most of the ring is on: Russia's mainland, for example, has a few
+    // vertices at -180 and thousands at positive longitudes.
+    let jumps = false;
+    for (let i = 1; i < ring.length; i++) if (Math.abs(ring[i][0] - ring[i - 1][0]) > 180) { jumps = true; break; }
+    if (!jumps) return ring;
+    const east = ring.filter(p => p[0] > 0).length >= ring.length / 2;
+    return ring.map(p => east ? [p[0] < 0 ? p[0] + 360 : p[0], p[1]] : [p[0] > 0 ? p[0] - 360 : p[0], p[1]]);
+  }
+  COUNTRY_FEATURES.features.forEach(f => {
+    const g = f.geometry;
+    // Antarctica's outline legitimately runs the full 360° along the map's bottom edge.
+    if (!g || (f.properties && f.properties.name === "Antarctica")) return;
+    const fix = poly => poly.map(unwrapRing);
+    if (g.type === "Polygon") g.coordinates = fix(g.coordinates);
+    else if (g.type === "MultiPolygon") g.coordinates = g.coordinates.map(fix);
+  });
+
+  const landLayer = L.geoJSON(COUNTRY_FEATURES, {
+    interactive: false, smoothFactor: 1.2,
+  }).addTo(map);
+
+  // ---------- Country names ----------
+  // Placed at the centroid of each country's largest polygon; smaller countries appear
+  // as you zoom in so the labels don't pile up.
+  map.createPane("labels");
+  map.getPane("labels").style.zIndex = 450;       // above land, below site markers
+  map.getPane("labels").style.pointerEvents = "none";
+  function ringArea(r) {
+    let a = 0;
+    for (let i = 0, j = r.length - 1; i < r.length; j = i++) a += (r[j][0] + r[i][0]) * (r[j][1] - r[i][1]);
+    return a / 2;
+  }
+  function ringCentroid(r) {
+    let x = 0, y = 0, a = 0;
+    for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
+      const f = r[j][0] * r[i][1] - r[i][0] * r[j][1];
+      x += (r[j][0] + r[i][0]) * f; y += (r[j][1] + r[i][1]) * f; a += f;
+    }
+    return a ? [y / (3 * a), x / (3 * a)] : [r[0][1], r[0][0]];
+  }
+  const countryLabels = [];
+  COUNTRY_FEATURES.features.forEach(f => {
+    if (!f.geometry || !f.properties || !f.properties.name) return;
+    const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    let best = null, bestA = 0, total = 0;
+    polys.forEach(p => { const a = Math.abs(ringArea(p[0])); total += a; if (a > bestA) { bestA = a; best = p[0]; } });
+    if (!best || f.properties.name === "Antarctica") return;
+    const m = L.marker(ringCentroid(best), {
+      pane: "labels", interactive: false, keyboard: false,
+      icon: L.divIcon({ className: "country-label", html: `<span>${esc(f.properties.name)}</span>`, iconSize: null }),
+    });
+    countryLabels.push({ m, area: bestA });
+  });
+  const labelLayer = L.layerGroup().addTo(map);
+  function updateLabels() {
+    const z = map.getZoom();
+    const min = z < 2 ? 400 : z < 3 ? 60 : z < 4 ? 12 : z < 5 ? 2 : z < 6 ? 0.3 : 0;
+    countryLabels.forEach(({ m, area }) => {
+      const show = area >= min;
+      if (show && !labelLayer.hasLayer(m)) labelLayer.addLayer(m);
+      else if (!show && labelLayer.hasLayer(m)) labelLayer.removeLayer(m);
+    });
+  }
+  map.on("zoomend", updateLabels);
+
+  const markerLayer = L.layerGroup().addTo(map);
+  const markers = new Map();
+  for (const s of SITES) {
+    const m = L.marker([s.lat, s.lon], { title: s.name, riseOnHover: true });
+    m.bindTooltip(s.name, { direction: "top", offset: [0, -8] });
+    m.bindPopup(() => popupHtml(s), { maxWidth: 340, autoPanPadding: [30, 30] });
+    markers.set(s.id, m);
+  }
+
+  function restyle() {
+    landLayer.setStyle({ color: tok("--border"), weight: 0.7, fillColor: tok("--land"), fillOpacity: 1 });
+    computeYearColours();
+    YEARS.forEach(y => $("year-" + y).style.setProperty("--yc", YEAR_COLOUR[y]));
+    drawLegend();
+    update(false);
+  }
+
+  function popupHtml(s) {
+    const selYears = YEARS.filter(y => state.years.has(y) && s.years[y]);
+    const allYears = Object.keys(s.years).map(Number);
+    const exYear = selYears.length ? selYears[selYears.length - 1] : allYears[allYears.length - 1];
+    const [text, chapter, line] = s.ex[exYear] || ["", "", ""];
+    const cells = YEARS.map(y => {
+      const cls = [s.years[y] ? "on" : "", state.years.has(y) ? "sel" : ""].join(" ").trim();
+      const t = `${y}: ${s.years[y] ? "named" : "not named"}`;
+      return `<span class="${cls}" style="--yc:${YEAR_COLOUR[y]}" title="${t}"></span>`;
+    }).join("");
+    const projects = (s.projects || []).map(([name, yrs]) =>
+      `<li><span>${esc(name)}</span><span class="yrs">${esc(yrs || "–")}</span></li>`).join("");
+    return `<div class="pop">
+      <h3>${esc(s.name)}</h3>
+      <p class="type">${esc(TYPE_LABEL[s.type] || s.type)} site</p>
+      <p class="where">${esc(s.location ? s.location + " · " : "")}${esc(s.country)}</p>
+      <p class="coords">${s.approx ? "≈ " : ""}${fmtCoord(s.lat, s.lon)}${s.approx ? " (approximate)" : " (stated in report)"}</p>
+      <p class="stat"><span class="dot" style="display:inline-block;vertical-align:-1px;background:${YEAR_COLOUR[colourYear(s)] || "transparent"}"></span>
+        ${state.by === "first" ? "First" : "Latest"} selected report naming it: <b>${colourYear(s) || "–"}</b></p>
+      <p class="stat">Named in <b>${allYears.length}</b> report${allYears.length === 1 ? "" : "s"} (${allYears[0]}–${allYears[allYears.length - 1]})${selYears.length !== allYears.length ? ` · <b>${selYears.length}</b> selected` : ""}</p>
+      <div class="strip" style="--n:${YEARS.length}">${cells}</div>
+      <div class="strip-axis"><span>${YEARS[0]}</span><span>${YEARS[YEARS.length - 1]}</span></div>
+      ${text ? `<blockquote>${esc(text)}<cite>${exYear} report · ${esc(chapter)} · line ${line}</cite></blockquote>` : ""}
+      ${projects ? `<p class="sub">Projects at this site · ${s.projects.length}</p><ul class="projects">${projects}</ul>` : ""}
+    </div>`;
+  }
+
+  // ---------- Pane ----------
+  const yearsEl = $("years"), countriesEl = $("countries"), sitesEl = $("sites");
+
+  YEARS.forEach(y => {
+    const b = document.createElement("button");
+    b.className = "year";
+    b.id = "year-" + y;
+    b.dataset.year = y;
+    b.innerHTML = `<span class="bar-wrap"><span class="bar"></span></span><span>${y}</span>`;
+    b.title = String(y);
+    b.addEventListener("click", () => { toggle(state.years, y); update(); });
+    yearsEl.appendChild(b);
+  });
+
+  COUNTRIES.forEach(c => {
+    const li = document.createElement("li");
+    const id = "country-" + c.toLowerCase().replace(/[^a-z]+/g, "-");
+    li.innerHTML = `<label class="country" for="${id}"><input type="checkbox" id="${id}"><span class="name">${esc(c)}</span><span class="n"></span></label>`;
+    li.querySelector("input").addEventListener("change", e => {
+      e.target.checked ? state.countries.add(c) : state.countries.delete(c);
+      update(true);
+    });
+    li.dataset.country = c;
+    countriesEl.appendChild(li);
+  });
+
+  function toggle(set, v) { set.has(v) ? set.delete(v) : set.add(v); }
+
+  TYPES.forEach(([k, label]) => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.dataset.type = k;
+    b.innerHTML = `<span class="shape" data-shape="${k}"></span><span>${label}</span><span class="n"></span>`;
+    b.addEventListener("click", () => { toggle(state.types, k); update(true); });
+    $("types").appendChild(b);
+  });
+  $("types-all").onclick = () => { state.types = new Set(TYPES.map(t => t[0])); update(true); };
+  $("types-none").onclick = () => { state.types = new Set(); update(true); };
+
+  $("years-all").onclick = () => { state.years = new Set(YEARS); update(); };
+  $("years-none").onclick = () => { state.years = new Set(); update(); };
+  $("years-latest").onclick = () => { state.years = new Set([YEARS[YEARS.length - 1]]); update(); };
+  $("countries-all").onclick = () => { state.countries = new Set(COUNTRIES); update(true); };
+  $("countries-none").onclick = () => { state.countries = new Set(); update(true); };
+  function setBy(by) {
+    state.by = by;
+    $("by-first").setAttribute("aria-pressed", by === "first");
+    $("by-latest").setAttribute("aria-pressed", by === "latest");
+    drawLegend();
+    update();
+  }
+  $("by-first").onclick = () => setBy("first");
+  $("by-latest").onclick = () => setBy("latest");
+
+  function visibleSites() {
+    return SITES
+      .filter(s => state.countries.has(s.country) && state.types.has(s.type))
+      .map(s => ({ s, n: count(s), r: YEARS.filter(y => state.years.has(y) && s.years[y]).length }))
+      .filter(v => v.n > 0)
+      .sort((a, b) => b.r - a.r || a.s.name.localeCompare(b.s.name));
+  }
+
+  function update(refit) {
+    const vis = visibleSites();
+
+    // Markers: one fixed size; colour = the site's first/latest selected report year.
+    // Draw earlier years first so the later colours sit on top where sites overlap.
+    markerLayer.clearLayers();
+    const pane = tok("--pane");
+    [...vis].sort((a, b) => colourYear(a.s) - colourYear(b.s)).forEach(({ s }, i) => {
+      const m = markers.get(s.id);
+      m.setIcon(L.divIcon({ className: "site-mark", html: shapeSvg(s.type, YEAR_COLOUR[colourYear(s)], pane), iconSize: [16, 16], iconAnchor: [8, 8] }));
+      m.setZIndexOffset(i);
+      markerLayer.addLayer(m);
+    });
+
+    // Summary
+    $("summary").innerHTML = `<b>${vis.length}</b> site${vis.length === 1 ? "" : "s"} · <b>${state.years.size}</b> of ${YEARS.length} reports`;
+
+    // Type chips: sites of each type named in the selected years and countries.
+    document.querySelectorAll("#types .chip").forEach(b => {
+      const k = b.dataset.type;
+      b.setAttribute("aria-pressed", state.types.has(k));
+      b.querySelector(".n").textContent = SITES.filter(s => s.type === k && state.countries.has(s.country) && count(s) > 0).length;
+    });
+
+    // Year bars: sites each report names, for the selected countries and site types.
+    const inCountries = SITES.filter(s => state.countries.has(s.country) && state.types.has(s.type));
+    const perYear = YEARS.map(y => inCountries.filter(s => s.years[y]).length);
+    const yMax = Math.max(1, ...perYear);
+    YEARS.forEach((y, i) => {
+      const b = $("year-" + y);
+      b.setAttribute("aria-pressed", state.years.has(y));
+      b.setAttribute("aria-label", `${y}: ${fmt(perYear[i])} sites named`);
+      b.querySelector(".bar").style.height = (perYear[i] ? Math.max(2, 22 * perYear[i] / yMax) : 1) + "px";
+    });
+
+    // Country rows: sites named in the selected years.
+    countriesEl.querySelectorAll("li").forEach(li => {
+      const c = li.dataset.country;
+      const n = SITES.filter(s => s.country === c && state.types.has(s.type) && count(s) > 0).length;
+      li.querySelector("input").checked = state.countries.has(c);
+      li.querySelector(".n").textContent = n ? `${n} site${n === 1 ? "" : "s"}` : "–";
+      li.querySelector(".country").classList.toggle("empty", !n);
+    });
+
+    // Site list
+    sitesEl.innerHTML = "";
+    if (!vis.length) {
+      sitesEl.innerHTML = `<li><p class="empty-note">${!state.years.size ? "Select at least one report year." : !state.countries.size ? "Select at least one country." : !state.types.size ? "Select at least one site type." : "No site of these types in these countries is named in the selected reports."}</p></li>`;
+    }
+    vis.forEach(({ s, r }) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<button class="site-btn"><span class="nm">${esc(s.name)}</span><span class="ct">${esc(TYPE_LABEL[s.type] || "")} · ${esc(s.country)}</span><span class="ms"><span class="shape">${shapeSvg(s.type, YEAR_COLOUR[colourYear(s)], tok("--pane"), 12, 1.5)}</span>${colourYear(s)} · ${r}</span></button>`;
+      li.firstChild.addEventListener("click", () => {
+        map.flyTo([s.lat, s.lon], Math.max(map.getZoom(), 7), { duration: matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 0.8 });
+        map.once("moveend", () => markers.get(s.id).openPopup());
+        if (matchMedia("(max-width: 760px)").matches) setPane(false);
+      });
+      sitesEl.appendChild(li);
+    });
+
+    // Refresh an open popup so its counts match the filters.
+    markers.forEach(m => { if (m.isPopupOpen()) m.getPopup().update(); });
+
+    if (refit) fitTo(vis);
+    save();
+  }
+
+  function fitTo(vis) {
+    if (!vis.length) return;
+    const b = L.latLngBounds(vis.map(v => [v.s.lat, v.s.lon]));
+    map.fitBounds(b, { padding: [50, 50], maxZoom: 7 });
+  }
+
+  function drawLegend() {
+    const stops = YEARS.map((y, i) => `${YEAR_COLOUR[y]} ${(100 * i / (YEARS.length - 1)).toFixed(1)}%`);
+    $("ramp-bar").style.background = `linear-gradient(90deg, ${stops.join(", ")})`;
+    const mid = YEARS[Math.floor((YEARS.length - 1) / 2)];
+    $("ramp-axis").innerHTML = `<span>${YEARS[0]}</span><span>${mid}</span><span>${YEARS[YEARS.length - 1]}</span>`;
+    $("legend-text").textContent = state.by === "first"
+      ? "Each site is coloured by the first selected report year that names it."
+      : "Each site is coloured by the latest selected report year that names it.";
+    $("sites-year-h").textContent = (state.by === "first" ? "first" : "latest") + " year · reports";
+    const midColour = YEAR_COLOUR[mid], paneColour = tok("--pane");
+    document.querySelectorAll("#types .shape").forEach(el => { el.innerHTML = shapeSvg(el.dataset.shape, midColour, paneColour, 14, 1.5); });
+    $("type-marks").innerHTML = TYPES.map(([k, label]) =>
+      `<div>${shapeSvg(k, midColour, paneColour, 14, 1.5)}<span>${label}</span></div>`).join("");
+  }
+
+  // ---------- Drawer (narrow screens) ----------
+  function setPane(open) {
+    $("app").classList.toggle("open", open);
+    $("pane-toggle").setAttribute("aria-expanded", open);
+    $("pane-toggle").textContent = open ? "Close" : "Filters";
+  }
+  $("pane-toggle").addEventListener("click", () => setPane(!$("app").classList.contains("open")));
+
+  // ---------- Theme ----------
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", restyle);
+  new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  setBy(state.by);
+  restyle();
+  updateLabels();
+  fitTo(visibleSites().length ? visibleSites() : SITES.map(s => ({ s })));
+  setTimeout(() => map.invalidateSize(), 0);
+})();
+</script>

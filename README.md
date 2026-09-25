@@ -24,6 +24,10 @@ gazetteers/
 scripts/
   seed_gazetteers.py        one-off: built the gazetteers from the sources above
   propose_search_terms.py   proposes project search terms; fills empty cells only
+  add_map_fields.py         capacity_kw, lat, lon, location_basis for projects; fills empty cells only
+map/
+  build_maps.py             builds output/test_sites_map.html and output/projects_map.html
+  *_template.html, leaflet.css, countries-10m.json   page templates and embedded assets
 validation/                 PDF and PRIMRE checks, review CSVs (to come)
 output/                     generated — safe to delete, not version-controlled
 ```
@@ -34,7 +38,20 @@ output/                     generated — safe to delete, not version-controlled
 python3 extract.py
 ```
 
-Needs macOS (`textutil`) and `openpyxl`. Takes about 40 seconds for all 24 reports.
+Needs macOS (`textutil`) and `openpyxl`. Takes about a minute for all 24 reports.
+
+Then the maps:
+
+```bash
+python3 scripts/add_map_fields.py
+python3 map/build_maps.py
+```
+
+They are published as the **OES Test Sites Atlas** (https://claude.ai/artifact/77xdV4uPzCHjjnJxZMVZfm)
+and the **Ocean Energy Projects Atlas** (https://claude.ai/artifact/V4PfT3yWmVM3WiWy71iceF).
+The projects map shows ocean energy projects with a stated capacity (planned ones included)
+that a country chapter names; `capacity_basis` and `location_basis` say where each value
+came from.
 
 ## The gazetteers are the source of truth
 
@@ -94,5 +111,6 @@ review has started, or the edits are lost.
       Recall against the Pilot's verified project-years 78%; precision in a 40-row sample of
       other years 32 right, 5 partly (developer named, not the deployment), 3 wrong
       (`validation/project_years_sample_check.csv`)
+- [x] Maps: both atlases rebuilt from these lists and republished in place
 - [ ] Validation against the PDFs (page matching, 2016 annex, audit sample)
 - [ ] Validation against PRIMRE

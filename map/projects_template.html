@@ -1,0 +1,564 @@
+<meta charset="utf-8">
+<title>Ocean Energy Projects Atlas</title>
+<meta name="description" content="Ocean energy projects with a stated capacity, named in the country chapters of the IEA-OES annual reports 2002–2025: one marker per project, sized by capacity and coloured by report year.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/*__LEAFLET_CSS__*/
+</style>
+<style>
+/*__SHARED_CSS__*/
+</style>
+<style>
+/* Additions for the projects map (shared tokens and components come from the test-site map). */
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--pane);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font: 600 13px var(--f-label);
+  letter-spacing: .02em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip .n { font: 400 11.5px var(--f-mono); color: var(--muted); }
+.chip[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); background: var(--chip); }
+.chip:hover { border-color: var(--muted); }
+.chip svg { flex: none; }
+
+.site-btn .ms { color: var(--ink); }
+.more-note { margin: 6px 0 0; font-size: 12.5px; color: var(--muted); }
+
+.sizes { display: flex; align-items: flex-end; gap: 14px; }
+.sizes figure { margin: 0; display: grid; justify-items: center; gap: 3px; font: 400 11px var(--f-mono); color: var(--muted); }
+.marks { display: grid; gap: 5px; }
+.marks div { display: flex; align-items: center; gap: 8px; }
+
+.pop dl { margin: 10px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; font-size: 13px; }
+.pop dt { color: var(--muted); }
+.pop dd { margin: 0; }
+.pop .cap { margin: 4px 0 0; font: 500 15px var(--f-mono); }
+.pop .yr { display: inline-flex; align-items: center; gap: 6px; }
+.pop .links { margin: 8px 0 0; font-size: 12.5px; }
+.pop .links a { color: var(--focus); }
+.pop .basis { color: var(--muted); font: 400 11.5px var(--f-body); }
+</style>
+
+<div class="app" id="app">
+  <button class="pane-toggle" id="pane-toggle" aria-controls="pane" aria-expanded="false">Filters</button>
+
+  <aside class="pane" id="pane" aria-label="Filters">
+    <header>
+      <div class="eyebrow">IEA-OES annual reports</div>
+      <h1>Ocean Energy Projects Atlas</h1>
+      <p class="summary" id="summary"></p>
+    </header>
+
+    <section class="group" aria-labelledby="years-h">
+      <div class="group-head">
+        <h2 id="years-h">Report year</h2>
+        <div class="actions">
+          <button class="link" id="years-all">All</button>
+          <button class="link" id="years-none">None</button>
+          <button class="link" id="years-latest">Latest</button>
+        </div>
+      </div>
+      <div class="years" id="years"></div>
+      <p class="hint">Each report year has its own colour. Bars show how many of the filtered projects each report names in its country chapters.</p>
+      <div class="colour-by">
+        <span>Colour projects by</span>
+        <div class="seg" role="group" aria-label="Colour projects by">
+          <button id="by-first" aria-pressed="true">First report</button>
+          <button id="by-latest" aria-pressed="false">Latest report</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" aria-labelledby="tech-h">
+      <div class="group-head">
+        <h2 id="tech-h">Technology</h2>
+        <div class="actions">
+          <button class="link" id="tech-all">All</button>
+          <button class="link" id="tech-none">None</button>
+        </div>
+      </div>
+      <div class="chips" id="techs"></div>
+    </section>
+
+    <section class="group" aria-labelledby="countries-h">
+      <div class="group-head">
+        <h2 id="countries-h">Country</h2>
+        <div class="actions">
+          <button class="link" id="countries-all">All</button>
+          <button class="link" id="countries-none">None</button>
+        </div>
+      </div>
+      <ul class="countries" id="countries"></ul>
+    </section>
+
+    <section class="group" aria-labelledby="prec-h">
+      <div class="group-head">
+        <h2 id="prec-h">Located by</h2>
+      </div>
+      <div class="chips" id="precs"></div>
+      <p class="hint">Where each marker's position comes from: the project's test site, PRIMRE's coordinates, a place or region the report names, or only the country (rings, spread around the country's centre).</p>
+    </section>
+
+    <section class="group" aria-labelledby="list-h">
+      <div class="group-head">
+        <h2 id="list-h">Projects shown</h2>
+        <span class="eyebrow" id="list-year-h">first year · capacity</span>
+      </div>
+      <ul class="sites" id="list"></ul>
+      <p class="more-note" id="more-note" hidden></p>
+    </section>
+
+    <div class="legend">
+      <div class="ramp" aria-hidden="true">
+        <div class="ramp-bar" id="ramp-bar"></div>
+        <div class="ramp-axis" id="ramp-axis"></div>
+      </div>
+      <div id="legend-text"></div>
+      <div class="sizes" id="sizes" aria-hidden="true"></div>
+      <div>Size is the project's largest stated capacity, on a log scale: from the report where the Pilot extraction found one, otherwise from PRIMRE. Planned projects are included.</div>
+      <div class="marks" id="marks" aria-hidden="true"></div>
+      <div id="excluded-note"></div>
+      <div>One marker per project. A project is shown for a report year when that year's country chapters name it. Positions are approximate.</div>
+    </div>
+  </aside>
+
+  <div id="map" role="region" aria-label="Map of projects"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const DATA = __PROJECT_DATA__;
+const TOPO = __COUNTRIES_TOPO__;
+
+(function () {
+  const YEARS = DATA.years;
+  const TECHS = ["wave", "tidal", "river current", "ocean current", "OTEC", "salinity gradient", "hybrid / multiple"];
+  const PRECS = [
+    ["test site", "Test site"], ["primre", "PRIMRE position"], ["place", "Named place"],
+    ["region", "Region"], ["country", "Country only"],
+  ];
+  const PREC_TEXT = {
+    "test site": "at its test site",
+    "primre": "PRIMRE's coordinates",
+    "place": "a place the report names (approximate)",
+    "region": "a region or water body the report names (approximate)",
+    "country": "country only; exact location not stated",
+  };
+  const NE_NAME = { "United States": "United States of America", "Republic of Korea": "South Korea",
+                    "Faroe Islands": "Faeroe Is.", "French Polynesia": "Fr. Polynesia",
+                    "Marshall Islands": "Marshall Is.", "Curacao": "Curaçao" };
+
+  const $ = id => document.getElementById(id);
+  const fmt = n => n.toLocaleString("en-US");
+  const tok = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const fmtKw = kw => kw >= 1000 ? `${+(kw / 1000).toPrecision(3)} MW` : `${+kw.toPrecision(3)} kW`;
+  const radius = kw => 3.5 + 2.3 * Math.log10(Math.max(kw, 1));
+
+  // ---------- Year colours (same ramp as the test-site map) ----------
+  const VIRIDIS = ["#440154", "#482475", "#414487", "#355f8d", "#2a788e", "#21918c",
+                   "#22a884", "#44bf70", "#7ad151", "#bddf26", "#fde725"];
+  const isDark = () => {
+    const t = document.documentElement.getAttribute("data-theme");
+    return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  };
+  function ramp(t) {
+    const x = Math.min(Math.max(t, 0), 1) * (VIRIDIS.length - 1);
+    const i = Math.min(Math.floor(x), VIRIDIS.length - 2), f = x - i;
+    const a = VIRIDIS[i], b = VIRIDIS[i + 1];
+    const ch = k => Math.round(parseInt(a.substr(k, 2), 16) * (1 - f) + parseInt(b.substr(k, 2), 16) * f);
+    return "#" + [1, 3, 5].map(k => ch(k).toString(16).padStart(2, "0")).join("");
+  }
+  let YC = {};
+  function computeYearColours() {
+    const [lo, hi] = isDark() ? [0.2, 1.0] : [0.0, 0.86];
+    YC = {};
+    YEARS.forEach((y, i) => { YC[y] = ramp(lo + (hi - lo) * i / Math.max(YEARS.length - 1, 1)); });
+  }
+
+  // ---------- Map and base layers ----------
+  const map = L.map("map", { preferCanvas: true, worldCopyJump: true, minZoom: 1, maxZoom: 11, zoomSnap: 0.5, zoomControl: false }).setView([30, 0], 2);
+  L.control.zoom({ position: "topright" }).addTo(map);
+  map.attributionControl.setPrefix(false);
+  map.attributionControl.addAttribution("Coastlines: Natural Earth · Projects: IEA-OES annual reports, PRIMRE");
+
+  const FEATURES = topojson.feature(TOPO, TOPO.objects.countries);
+  function unwrapRing(ring) {
+    // Rings that jump across the 180° meridian: move the minority of points to the side
+    // most of the ring is on, so Leaflet doesn't draw a stripe across the map.
+    let jumps = false;
+    for (let i = 1; i < ring.length; i++) if (Math.abs(ring[i][0] - ring[i - 1][0]) > 180) { jumps = true; break; }
+    if (!jumps) return ring;
+    const east = ring.filter(p => p[0] > 0).length >= ring.length / 2;
+    return ring.map(p => east ? [p[0] < 0 ? p[0] + 360 : p[0], p[1]] : [p[0] > 0 ? p[0] - 360 : p[0], p[1]]);
+  }
+  FEATURES.features.forEach(f => {
+    const g = f.geometry;
+    if (!g || (f.properties && f.properties.name === "Antarctica")) return;
+    const fix = poly => poly.map(unwrapRing);
+    if (g.type === "Polygon") g.coordinates = fix(g.coordinates);
+    else if (g.type === "MultiPolygon") g.coordinates = g.coordinates.map(fix);
+  });
+  const landLayer = L.geoJSON(FEATURES, { interactive: false, smoothFactor: 1.2 }).addTo(map);
+
+  map.createPane("labels");
+  map.getPane("labels").style.zIndex = 450;
+  map.getPane("labels").style.pointerEvents = "none";
+  function ringArea(r) {
+    let a = 0;
+    for (let i = 0, j = r.length - 1; i < r.length; j = i++) a += (r[j][0] + r[i][0]) * (r[j][1] - r[i][1]);
+    return a / 2;
+  }
+  function ringCentroid(r) {
+    let x = 0, y = 0, a = 0;
+    for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
+      const f = r[j][0] * r[i][1] - r[i][0] * r[j][1];
+      x += (r[j][0] + r[i][0]) * f; y += (r[j][1] + r[i][1]) * f; a += f;
+    }
+    return a ? [y / (3 * a), x / (3 * a)] : [r[0][1], r[0][0]];
+  }
+  const COUNTRY_POINT = {};
+  const countryLabels = [];
+  FEATURES.features.forEach(f => {
+    if (!f.geometry || !f.properties || !f.properties.name) return;
+    const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    let best = null, bestA = 0;
+    polys.forEach(p => { const a = Math.abs(ringArea(p[0])); if (a > bestA) { bestA = a; best = p[0]; } });
+    if (!best || f.properties.name === "Antarctica") return;
+    const pt = ringCentroid(best);
+    COUNTRY_POINT[f.properties.name] = pt;
+    countryLabels.push({
+      area: bestA,
+      m: L.marker(pt, {
+        pane: "labels", interactive: false, keyboard: false,
+        icon: L.divIcon({ className: "country-label", html: `<span>${esc(f.properties.name)}</span>`, iconSize: null }),
+      }),
+    });
+  });
+  const labelLayer = L.layerGroup().addTo(map);
+  function updateLabels() {
+    const z = map.getZoom();
+    const min = z < 2 ? 400 : z < 3 ? 60 : z < 4 ? 12 : z < 5 ? 2 : z < 6 ? 0.3 : 0;
+    countryLabels.forEach(({ m, area }) => {
+      const show = area >= min;
+      if (show && !labelLayer.hasLayer(m)) labelLayer.addLayer(m);
+      else if (!show && labelLayer.hasLayer(m)) labelLayer.removeLayer(m);
+    });
+  }
+
+  // ---------- Projects ----------
+  const PROJECTS = [];
+  let unplaced = 0;
+  DATA.projects.forEach(p => {
+    const base = p.lat != null ? [p.lat, p.lon] : COUNTRY_POINT[NE_NAME[p.country] || p.country];
+    if (!base) { unplaced++; return; }
+    p.base = base;
+    p.key = base[0].toFixed(3) + "," + base[1].toFixed(3);
+    p.m = L.circleMarker(base, { radius: radius(p.kw) });
+    p.m.bindTooltip(`${esc(p.name)} · ${fmtKw(p.kw)}`, { direction: "top", offset: [0, -6] });
+    p.m.bindPopup(() => popupHtml(p), { maxWidth: 360, autoPanPadding: [30, 30] });
+    PROJECTS.push(p);
+  });
+  const COUNTRIES = [...new Set(PROJECTS.map(p => p.country))].sort();
+
+  const state = {
+    years: new Set(YEARS), countries: new Set(COUNTRIES),
+    techs: new Set(TECHS), precs: new Set(PRECS.map(p => p[0])), by: "first",
+  };
+  const STORE = "oes-projects-atlas-filters-v2";
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || "null");
+    if (saved) {
+      state.years = new Set(saved.years.filter(v => YEARS.includes(v)));
+      state.countries = new Set(saved.countries.filter(v => COUNTRIES.includes(v)));
+      state.techs = new Set(saved.techs.filter(v => TECHS.includes(v)));
+      state.precs = new Set(saved.precs.filter(v => PRECS.some(p => p[0] === v)));
+      if (saved.by === "latest") state.by = "latest";
+    }
+  } catch (e) { /* storage unavailable: use defaults */ }
+  const save = () => {
+    try {
+      localStorage.setItem(STORE, JSON.stringify({
+        years: [...state.years], countries: [...state.countries], techs: [...state.techs],
+        precs: [...state.precs], by: state.by,
+      }));
+    } catch (e) { /* ignore */ }
+  };
+
+  const inYears = (p, years = state.years) => YEARS.some(y => years.has(y) && p.years[y]);
+  const passes = (p, skip) =>
+    (skip === "years" || inYears(p)) &&
+    (skip === "countries" || state.countries.has(p.country)) &&
+    (skip === "techs" || state.techs.has(p.tech)) &&
+    (skip === "precs" || state.precs.has(p.prec));
+  // The report year that colours a project: its first (or latest) among the selected years.
+  function colourYear(p) {
+    const ys = YEARS.filter(y => state.years.has(y) && p.years[y]);
+    return ys.length ? (state.by === "first" ? ys[0] : ys[ys.length - 1]) : null;
+  }
+
+  function popupHtml(p) {
+    const allYears = YEARS.filter(y => p.years[y]);
+    const selYears = allYears.filter(y => state.years.has(y));
+    const exYear = [...(selYears.length ? selYears : allYears)].reverse().find(y => p.ex[y]);
+    const [text, cite] = (exYear && p.ex[exYear]) || ["", ""];
+    const cells = YEARS.map(y => {
+      const cls = [p.years[y] ? "on" : "", state.years.has(y) ? "sel" : ""].join(" ").trim();
+      return `<span class="${cls}" style="--yc:${YC[y]}" title="${y}: ${p.years[y] ? "named" : "not named"}"></span>`;
+    }).join("");
+    const links = p.primre.map(([n, url]) => url
+      ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(n)}</a>` : esc(n)).join(" · ");
+    return `<div class="pop">
+      <h3>${esc(p.name)}</h3>
+      <p class="cap">${fmtKw(p.kw)} <span class="basis">capacity from ${esc(p.capBasis)}</span></p>
+      <p class="where">${esc(p.where)}${p.where === p.country ? "" : " · " + esc(p.country)}</p>
+      <dl>
+        <dt>Technology</dt><dd>${esc(p.techRaw || p.tech)}</dd>
+        ${p.status ? `<dt>Status</dt><dd>${esc(p.status.replace(/_/g, " "))} <span class="basis">(${p.statusYear} report)</span></dd>` : ""}
+        ${p.dev ? `<dt>Developer</dt><dd>${esc(p.dev)}</dd>` : ""}
+        ${p.site ? `<dt>Test site</dt><dd>${esc(p.site)}</dd>` : ""}
+        <dt>Placed</dt><dd>${PREC_TEXT[p.prec]}</dd>
+      </dl>
+      <p class="stat">Named in <b>${allYears.length}</b> report${allYears.length === 1 ? "" : "s"} (${allYears[0]}–${allYears[allYears.length - 1]})${selYears.length !== allYears.length ? ` · <b>${selYears.length}</b> selected` : ""}</p>
+      <div class="strip" style="--n:${YEARS.length}">${cells}</div>
+      <div class="strip-axis"><span>${YEARS[0]}</span><span>${YEARS[YEARS.length - 1]}</span></div>
+      ${text ? `<blockquote>${esc(text)}<cite>${exYear} report · ${esc(cite)}</cite></blockquote>` : ""}
+      ${links ? `<p class="links">PRIMRE: ${links}</p>` : ""}
+    </div>`;
+  }
+
+  // ---------- Pane ----------
+  const yearsEl = $("years"), countriesEl = $("countries"), listEl = $("list");
+  const toggle = (set, v) => { set.has(v) ? set.delete(v) : set.add(v); };
+
+  YEARS.forEach(y => {
+    const b = document.createElement("button");
+    b.className = "year";
+    b.id = "year-" + y;
+    b.innerHTML = `<span class="bar-wrap"><span class="bar"></span></span><span>${y}</span>`;
+    b.title = String(y);
+    b.addEventListener("click", () => { toggle(state.years, y); update(); });
+    yearsEl.appendChild(b);
+  });
+
+  TECHS.forEach(t => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.dataset.tech = t;
+    b.innerHTML = `<span>${esc(t)}</span><span class="n"></span>`;
+    b.addEventListener("click", () => { toggle(state.techs, t); update(); });
+    $("techs").appendChild(b);
+  });
+
+  PRECS.forEach(([k, label]) => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.dataset.prec = k;
+    b.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" data-mark="${k}"></svg><span>${label}</span><span class="n"></span>`;
+    b.addEventListener("click", () => { toggle(state.precs, k); update(true); });
+    $("precs").appendChild(b);
+  });
+
+  COUNTRIES.forEach(c => {
+    const li = document.createElement("li");
+    const id = "country-" + c.toLowerCase().replace(/[^a-z]+/g, "-");
+    li.innerHTML = `<label class="country" for="${id}"><input type="checkbox" id="${id}"><span class="name">${esc(c)}</span><span class="n"></span></label>`;
+    li.querySelector("input").addEventListener("change", e => {
+      e.target.checked ? state.countries.add(c) : state.countries.delete(c);
+      update(true);
+    });
+    li.dataset.country = c;
+    countriesEl.appendChild(li);
+  });
+
+  $("years-all").onclick = () => { state.years = new Set(YEARS); update(); };
+  $("years-none").onclick = () => { state.years = new Set(); update(); };
+  $("years-latest").onclick = () => { state.years = new Set([YEARS[YEARS.length - 1]]); update(); };
+  $("tech-all").onclick = () => { state.techs = new Set(TECHS); update(); };
+  $("tech-none").onclick = () => { state.techs = new Set(); update(); };
+  $("countries-all").onclick = () => { state.countries = new Set(COUNTRIES); update(true); };
+  $("countries-none").onclick = () => { state.countries = new Set(); update(true); };
+  function setBy(by) {
+    state.by = by;
+    $("by-first").setAttribute("aria-pressed", by === "first");
+    $("by-latest").setAttribute("aria-pressed", by === "latest");
+    drawLegend();
+    update();
+  }
+  $("by-first").onclick = () => setBy("first");
+  $("by-latest").onclick = () => setBy("latest");
+
+  // ---------- Drawing ----------
+  const markerLayer = L.layerGroup().addTo(map);
+  let visible = [];
+
+  function styleFor(p) {
+    const c = YC[colourYear(p)], pane = tok("--pane");
+    if (p.prec === "country") return { color: c, weight: 1.8, fillColor: c, fillOpacity: 0.12 };
+    if (p.prec === "region") return { color: c, weight: 1.5, fillColor: c, fillOpacity: 0.55 };
+    return { color: pane, weight: 1.5, fillColor: c, fillOpacity: 1 };
+  }
+
+  // Projects that share a point (the same test site or country) are spread on a
+  // sunflower spiral in screen space so each stays clickable; recomputed on zoom.
+  function layout() {
+    const groups = new Map();
+    visible.forEach(p => {
+      if (!groups.has(p.key)) groups.set(p.key, []);
+      groups.get(p.key).push(p);
+    });
+    groups.forEach(g => {
+      g.sort((a, b) => b.kw - a.kw);
+      const c = map.latLngToLayerPoint(g[0].base);
+      g.forEach((p, i) => {
+        if (i === 0) { p.m.setLatLng(p.base); return; }
+        const ang = i * 2.39996, dist = 4 * Math.sqrt(i) + 3;
+        p.m.setLatLng(map.layerPointToLatLng(c.add([Math.cos(ang) * dist, Math.sin(ang) * dist])));
+      });
+    });
+  }
+
+  function update(refit) {
+    visible = PROJECTS.filter(p => passes(p));
+
+    markerLayer.clearLayers();
+    // Largest first so smaller symbols sit on top and stay clickable.
+    [...visible].sort((a, b) => b.kw - a.kw).forEach(p => {
+      p.m.setStyle(styleFor(p));
+      markerLayer.addLayer(p.m);
+    });
+    layout();
+
+    const totalKw = visible.reduce((a, p) => a + p.kw, 0);
+    $("summary").innerHTML = visible.length
+      ? `<b>${fmt(visible.length)}</b> project${visible.length === 1 ? "" : "s"} · <b>${fmtKw(totalKw)}</b> stated capacity · <b>${state.years.size}</b> of ${YEARS.length} reports`
+      : "No projects match these filters";
+
+    // Year bars: projects each report names, under the other filters.
+    const perYear = YEARS.map(y => PROJECTS.filter(p => p.years[y] && passes(p, "years")).length);
+    const yMax = Math.max(1, ...perYear);
+    YEARS.forEach((y, i) => {
+      const b = $("year-" + y);
+      b.setAttribute("aria-pressed", state.years.has(y));
+      b.setAttribute("aria-label", `${y}: ${perYear[i]} projects`);
+      b.querySelector(".bar").style.height = (perYear[i] ? Math.max(2, 22 * perYear[i] / yMax) : 1) + "px";
+    });
+
+    document.querySelectorAll("#techs .chip").forEach(b => {
+      const t = b.dataset.tech;
+      b.setAttribute("aria-pressed", state.techs.has(t));
+      b.querySelector(".n").textContent = PROJECTS.filter(p => p.tech === t && passes(p, "techs")).length;
+    });
+    document.querySelectorAll("#precs .chip").forEach(b => {
+      const k = b.dataset.prec;
+      b.setAttribute("aria-pressed", state.precs.has(k));
+      b.querySelector(".n").textContent = PROJECTS.filter(p => p.prec === k && passes(p, "precs")).length;
+    });
+    countriesEl.querySelectorAll("li").forEach(li => {
+      const c = li.dataset.country;
+      const n = PROJECTS.filter(p => p.country === c && passes(p, "countries")).length;
+      li.querySelector("input").checked = state.countries.has(c);
+      li.querySelector(".n").textContent = n || "–";
+      li.querySelector(".country").classList.toggle("empty", !n);
+    });
+
+    // Project list, largest capacity first.
+    const LIMIT = 250;
+    const sorted = [...visible].sort((a, b) => b.kw - a.kw || a.name.localeCompare(b.name));
+    listEl.innerHTML = sorted.length ? "" :
+      `<li><p class="empty-note">No projects match. Widen the year, technology, country or placement filters.</p></li>`;
+    sorted.slice(0, LIMIT).forEach(p => {
+      const li = document.createElement("li");
+      const y = colourYear(p);
+      li.innerHTML = `<button class="site-btn"><span class="nm">${esc(p.name)}</span><span class="ct">${esc(p.where === p.country ? p.country : p.where + " · " + p.country)}</span><span class="ms"><span class="dot" style="background:${YC[y]}"></span>${y} · ${fmtKw(p.kw)}</span></button>`;
+      li.firstChild.addEventListener("click", () => {
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        map.flyTo(p.base, Math.max(map.getZoom(), 7), { duration: reduce ? 0 : 0.8 });
+        map.once("moveend", () => { layout(); p.m.openPopup(); });
+        if (matchMedia("(max-width: 760px)").matches) setPane(false);
+      });
+      listEl.appendChild(li);
+    });
+    $("more-note").hidden = sorted.length <= LIMIT;
+    $("more-note").textContent = `Showing the ${LIMIT} largest of ${fmt(sorted.length)}. Narrow the filters to see the rest.`;
+
+    PROJECTS.forEach(p => { if (p.m.isPopupOpen()) p.m.getPopup().update(); });
+    if (refit && visible.length) {
+      map.fitBounds(L.latLngBounds(visible.map(p => p.base)), { padding: [50, 50], maxZoom: 7 });
+    }
+    save();
+  }
+
+  function drawLegend() {
+    const stops = YEARS.map((y, i) => `${YC[y]} ${(100 * i / (YEARS.length - 1)).toFixed(1)}%`);
+    $("ramp-bar").style.background = `linear-gradient(90deg, ${stops.join(", ")})`;
+    const mid = YEARS[Math.floor((YEARS.length - 1) / 2)];
+    $("ramp-axis").innerHTML = `<span>${YEARS[0]}</span><span>${mid}</span><span>${YEARS[YEARS.length - 1]}</span>`;
+    $("legend-text").textContent = state.by === "first"
+      ? "Each project is coloured by the first selected report year that names it."
+      : "Each project is coloured by the latest selected report year that names it.";
+    $("list-year-h").textContent = (state.by === "first" ? "first" : "latest") + " year · capacity";
+
+    const pane = tok("--pane"), mid2 = YC[mid];
+    $("sizes").innerHTML = [[10, "10 kW"], [1000, "1 MW"], [100000, "100 MW"]].map(([kw, label]) => {
+      const r = radius(kw), d = 2 * r + 4;
+      return `<figure><svg width="${d}" height="${d}" viewBox="0 0 ${d} ${d}"><circle cx="${d / 2}" cy="${d / 2}" r="${r}" fill="${mid2}" stroke="${pane}" stroke-width="1.5"/></svg><figcaption>${label}</figcaption></figure>`;
+    }).join("");
+
+    const mark = (k, s = 14) => {
+      const r = s / 2 - 1.5, c = s / 2;
+      if (k === "country") return `<circle cx="${c}" cy="${c}" r="${r}" fill="${mid2}" fill-opacity=".12" stroke="${mid2}" stroke-width="1.8"/>`;
+      if (k === "region") return `<circle cx="${c}" cy="${c}" r="${r}" fill="${mid2}" fill-opacity=".55" stroke="${mid2}" stroke-width="1.5"/>`;
+      return `<circle cx="${c}" cy="${c}" r="${r}" fill="${mid2}" stroke="${pane}" stroke-width="1.5"/>`;
+    };
+    document.querySelectorAll("#precs svg").forEach(svg => { svg.innerHTML = mark(svg.dataset.mark); });
+    $("marks").innerHTML = [["test site", "Test site, PRIMRE position or named place"], ["region", "Region or water body"], ["country", "Country only"]]
+      .map(([k, label]) => `<div><svg width="14" height="14" viewBox="0 0 14 14">${mark(k)}</svg><span>${label}</span></div>`).join("");
+
+    const ex = DATA.excluded;
+    const nowhere = ex.no_location + unplaced;
+    $("excluded-note").textContent =
+      `Not shown: ${ex.no_capacity} projects named in country chapters with no stated capacity` +
+      `${nowhere ? `, and ${nowhere} with a capacity but no location` : ""}.`;
+  }
+
+  function restyle() {
+    landLayer.setStyle({ color: tok("--border"), weight: 0.7, fillColor: tok("--land"), fillOpacity: 1 });
+    computeYearColours();
+    YEARS.forEach(y => $("year-" + y).style.setProperty("--yc", YC[y]));
+    drawLegend();
+    update(false);
+  }
+
+  // ---------- Drawer (narrow screens) ----------
+  function setPane(open) {
+    $("app").classList.toggle("open", open);
+    $("pane-toggle").setAttribute("aria-expanded", open);
+    $("pane-toggle").textContent = open ? "Close" : "Filters";
+  }
+  $("pane-toggle").addEventListener("click", () => setPane(!$("app").classList.contains("open")));
+
+  map.on("zoomend", () => { updateLabels(); layout(); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", restyle);
+  new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  setBy(state.by);
+  restyle();
+  updateLabels();
+  const initial = visible.length ? visible : PROJECTS;
+  map.fitBounds(L.latLngBounds(initial.map(p => p.base)), { padding: [40, 40], maxZoom: 5 });
+  setTimeout(() => { map.invalidateSize(); layout(); }, 0);
+})();
+</script>
